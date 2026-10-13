@@ -16,6 +16,7 @@ try
     Test("missing rejected", () => Reject(() => Library.Import(Path.Combine(root,"missing.mp4"))));
     Test("unsupported rejected", () => Reject(() => Library.Import(Path.Combine(root,"file.exe"))));
     Test("project web resolves entry", () => { File.WriteAllText(project,"{\"title\":\"测试项目\",\"type\":\"web\",\"file\":\"index.html\"}"); var item=Library.Import(project); Equal("测试项目",item.Title); Equal(html,item.Path); });
+    Test("original capitalized Video project accepted", () => { File.WriteAllText(project,"{\"type\":\"Video\",\"file\":\"中文 视频.mp4\"}"); Equal("video",Library.Import(project).Kind); });
     Test("project retains root and nested preview", () => { Directory.CreateDirectory(Path.Combine(root,"images")); var preview=Path.Combine(root,"images","cover.png"); File.WriteAllBytes(preview,[0]); File.WriteAllText(project,"{\"type\":\"web\",\"file\":\"index.html\",\"preview\":\"images/cover.png\"}"); var item=Library.Import(project); Equal(root,item.Root); Equal(preview,item.Preview); });
     Test("scene project rejected", () => { File.WriteAllText(project,"{\"type\":\"scene\",\"file\":\"scene.pkg\"}"); Reject(()=>Library.Import(project)); });
     Test("project traversal rejected", () => { File.WriteAllText(project,"{\"type\":\"web\",\"file\":\"../outside.html\"}"); Reject(()=>Library.Import(project)); });

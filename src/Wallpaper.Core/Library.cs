@@ -20,7 +20,7 @@ public static class Library
             {
                 using var json = JsonDocument.Parse(File.ReadAllText(path));
                 var doc = json.RootElement;
-                var kind = doc.GetProperty("type").GetString();
+                var kind = doc.GetProperty("type").GetString()?.ToLowerInvariant();
                 if (kind is not ("video" or "web")) throw new InvalidDataException("当前版本支持视频和网页；场景包的渲染器尚未完成。");
                 var folder = System.IO.Path.GetDirectoryName(path)!;
                 var entry = ChildPath(folder, doc.GetProperty("file").GetString() ?? "");
