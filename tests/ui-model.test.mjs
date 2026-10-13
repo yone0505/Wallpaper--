@@ -1,5 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
 import {visibleItems, selectedItem, renderTitle, safeUrl} from '../src/Wallpaper.App/ui/model.mjs';
 const items=[{id:'a',title:'星河',kind:'web'},{id:'b',title:'Ocean',kind:'video'},{id:'c',title:'Alpha',kind:'video'}];
 test('case insensitive title search',()=>assert.deepEqual(visibleItems(items,'oC','all','title').map(x=>x.id),['b']));
@@ -7,3 +8,5 @@ test('kind filter and sort preserve original',()=>{assert.deepEqual(visibleItems
 test('missing selection uses first and empty stays null',()=>{assert.equal(selectedItem(items,'removed').id,'a');assert.equal(selectedItem([],'x'),null)});
 test('untrusted title escaped',()=>assert.equal(renderTitle('<img src=x> & "'), '&lt;img src=x&gt; &amp; &quot;'));
 test('thumbnail protocols constrained',()=>{assert.equal(safeUrl('javascript:alert(1)'), '');assert.equal(safeUrl('https://media-a.wallpaper.local/image.png'),'https://media-a.wallpaper.local/image.png');assert.equal(safeUrl('https://outside.com/x'),'')});
+test('bundled demo entries and PNG previews exist',async()=>{for(const name of ['aurora','orbit']){const base=new URL(`../src/Wallpaper.App/demos/${name}/`,import.meta.url);const project=JSON.parse(await readFile(new URL('project.json',base),'utf8'));assert.equal(project.type,'web');assert.ok((await readFile(new URL(project.file,base),'utf8')).includes('requestAnimationFrame'));const preview=await readFile(new URL(project.preview,base));assert.deepEqual([...preview.subarray(0,8)],[137,80,78,71,13,10,26,10]);}});
+test('original video fixture has WebM container',async()=>{const bytes=await readFile(new URL('./fixtures/orbit.webm',import.meta.url));assert.deepEqual([...bytes.subarray(0,4)],[26,69,223,163]);assert.ok(bytes.length>1000)});

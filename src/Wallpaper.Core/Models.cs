@@ -1,6 +1,6 @@
 namespace Wallpaper.Core;
 
-public sealed record WallpaperItem(string Id, string Title, string Kind, string Path, string? Preview = null);
+public sealed record WallpaperItem(string Id, string Title, string Kind, string Path, string? Preview = null, string? Root = null);
 
 public sealed class Settings
 {
@@ -40,7 +40,7 @@ public sealed class AppState
     {
         if (SchemaVersion != 1 || Items is null || Assignments is null || Playlist is null || Settings is null)
             throw new InvalidDataException("配置结构不支持");
-        if (Items.Any(x => x is null || string.IsNullOrWhiteSpace(x.Id) || string.IsNullOrWhiteSpace(x.Path) || x.Kind is not ("video" or "web")))
+        if (Items.Any(x => x is null || string.IsNullOrWhiteSpace(x.Id) || string.IsNullOrWhiteSpace(x.Title) || string.IsNullOrWhiteSpace(x.Path) || x.Kind is not ("video" or "web")))
             throw new InvalidDataException("配置资源记录不完整");
         Items = Items.DistinctBy(x => x.Id).ToList();
         var ids = Items.Select(x => x.Id).ToHashSet();

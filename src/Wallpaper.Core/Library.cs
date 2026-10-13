@@ -24,6 +24,8 @@ public static class Library
                 if (kind is not ("video" or "web")) throw new InvalidDataException("当前版本支持视频和网页；场景包的渲染器尚未完成。");
                 var folder = System.IO.Path.GetDirectoryName(path)!;
                 var entry = ChildPath(folder, doc.GetProperty("file").GetString() ?? "");
+                if (Directory.Exists(entry) || System.IO.Path.GetExtension(entry).Equals(".json",StringComparison.OrdinalIgnoreCase))
+                    throw new InvalidDataException("项目入口不能指向目录或另一个项目文件。");
                 var item = Import(entry);
                 if (item.Kind != kind) throw new InvalidDataException("项目类型与入口文件不匹配。");
                 string? preview = null;
@@ -32,13 +34,20 @@ public static class Library
                     var candidate = ChildPath(folder, p.GetString()!);
                     if (File.Exists(candidate) && System.IO.Path.GetExtension(candidate).ToLowerInvariant() is ".png" or ".jpg" or ".jpeg" or ".gif" or ".webp") preview = candidate;
                 }
-                return item with { Title = doc.TryGetProperty("title", out var title) && title.ValueKind == JsonValueKind.String ? title.GetString()! : item.Title, Preview = preview };
+                return item with { Title = doc.TryGetProperty("title", out var title) && title.ValueKind == JsonValueKind.String && !string.IsNullOrWhiteSpace(title.GetString()) ? title.GetString()! : item.Title, Preview = preview, Root = folder };
             }
             var type = ext switch { ".mp4" or ".webm" or ".m4v" or ".mov" => "video", ".html" or ".htm" => "web", _ => throw new InvalidDataException("请选择 MP4、WebM、HTML 或视频/网页项目的 project.json。") };
             return new(Id(path), System.IO.Path.GetFileNameWithoutExtension(path), type, path);
         }
         catch (Exception ex) when (ex is JsonException or KeyNotFoundException or ArgumentException or InvalidOperationException)
         { throw new InvalidDataException("项目文件格式不正确，请选择有效的 video/web 项目。", ex); }
+    }
+
+    public static string ResourcePath(WallpaperItem item, bool preview = false)
+    {
+        var root=item.Root??System.IO.Path.GetDirectoryName(item.Path)!;
+        var path=System.IO.Path.GetRelativePath(root,preview?item.Preview??item.Path:item.Path);
+        return string.Join("/",path.Replace('\\','/').Split('/').Select(Uri.EscapeDataString));
     }
 
     private static string ChildPath(string folder, string relative)
