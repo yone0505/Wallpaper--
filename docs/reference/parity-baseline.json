@@ -1,0 +1,796 @@
+{
+  "schemaVersion": 1,
+  "target": {
+    "application": "Wallpaper Engine",
+    "version": "2.8.42",
+    "fileVersion": "2.8.0.42",
+    "steamAppId": 431960
+  },
+  "observedEnvironment": {
+    "osBuild": "10.0.26200",
+    "language": "zh-chs",
+    "skin": "dark",
+    "dpi": 96,
+    "monitor": {
+      "width": 2560,
+      "height": 1440
+    },
+    "mainWindow": {
+      "width": 2213,
+      "height": 1201
+    },
+    "settingsWindow": {
+      "width": 550,
+      "height": 610
+    }
+  },
+  "referenceObservations": {
+    "runtimeCapturesReviewed": [
+      "main-window",
+      "settings-performance",
+      "settings-general"
+    ],
+    "capturesStorage": "work/reference/ (local only)",
+    "desktopHierarchy": [
+      "Progman",
+      "WorkerW",
+      "WPEDesktopDX11Window"
+    ],
+    "desktopIconsSibling": "SHELLDLL_DefView",
+    "uiFramework": "AngularJS",
+    "uiEntry": "ui/dist/index.html",
+    "uiRoutes": [
+      "/browsewallpapers",
+      "/settings",
+      "/editor",
+      "/welcome",
+      "/"
+    ],
+    "inlineTemplateCount": 89,
+    "literalEditorMethodCount": 170,
+    "literalDeferredNamespaceMethodCombinations": 97,
+    "uiSourceSha256": "be104cf40bd7fe1e3598f7387f1cfa545c4a71282d9a3a3b30dcc4a8b262373e",
+    "uiSourceCoverage": "partial",
+    "nativeEngineSourceRecovered": false,
+    "reaEvidence": [
+      "ev_b6b5a5e17dc110e276bc26e65c7986d17eb38f55549cd347e0c593eb2733f0e1",
+      "ev_5733180283a92c5d59f993de489ec9d51c9272f26c3416ad808aa492fe6adc89",
+      "ev_af8c58bbc2923f679e44d382290aa23bdbe5c3bc1d447891c36597c6898a84d8"
+    ]
+  },
+  "features": [
+    {
+      "id": "UI-01",
+      "category": "interface",
+      "name": "主界面布局与主题",
+      "acceptance": "相同窗口尺寸、DPI、主题和内容下，逐项比较导航、网格、详情区、播放列表、页脚、字体、颜色、间距。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "UI-02",
+      "category": "interface",
+      "name": "设置与弹窗",
+      "acceptance": "性能、常规、插件、关于及各弹窗的控件、文字、默认值、选中状态、滚动、确定与取消行为一致。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "UI-03",
+      "category": "interface",
+      "name": "交互与异常状态",
+      "acceptance": "核对加载、空内容、下载、出错、禁用、键盘导航、右键菜单、提示、迷你模式和窗口缩放。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "UI-04",
+      "category": "interface",
+      "name": "编辑器布局",
+      "acceptance": "逐项比较文件菜单、工具栏、树、预览、属性、资源、脚本日志、面板调整与布局保存。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "LIB-01",
+      "category": "library",
+      "name": "本地库和导入",
+      "acceptance": "导入多个媒体与网页项目，检查元数据、预览、来源、重复项、持久化、缺失与损坏文件。",
+      "verification": [
+        "runtime"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "LIB-02",
+      "category": "library",
+      "name": "搜索排序筛选",
+      "acceptance": "对固定集合验证名称、时间、大小等排序和类型、标签、年龄筛选以及筛选重置。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "LIB-03",
+      "category": "library",
+      "name": "收藏与文件夹",
+      "acceptance": "收藏、取消收藏、创建和整理文件夹、多选批量操作在重启后保持正确。",
+      "verification": [
+        "runtime"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "LIB-04",
+      "category": "library",
+      "name": "壁纸属性",
+      "acceptance": "针对原版可定义的每种控件验证值、条件可见性、实时更新、恢复默认、预设与持久化。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "LIB-05",
+      "category": "library",
+      "name": "详情与预览",
+      "acceptance": "对同一项目验证标题、描述、作者、大小、标签、预览比例和选择边框；弹出预览独立控制。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "LIB-06",
+      "category": "library",
+      "name": "本地备份和源文件定位",
+      "acceptance": "备份项目能够被发现，打开资源目录准确，打包项目与可编辑源项目有明确区分。",
+      "verification": [
+        "runtime"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "MON-01",
+      "category": "displays",
+      "name": "独立显示器壁纸",
+      "acceptance": "独立配置横竖屏、多分辨率、负坐标、多DPI显示器，并核对各屏壁纸和音频。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "MON-02",
+      "category": "displays",
+      "name": "跨屏与克隆",
+      "acceptance": "跨屏按像素布局覆盖虚拟桌面，克隆与自定义组按原版同步帧和分配显示器。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "MON-03",
+      "category": "displays",
+      "name": "显示配置文件",
+      "acceptance": "保存配置后修改不会隐式更新快照；载入与覆盖保存恢复对应壁纸和播放列表。",
+      "verification": [
+        "runtime"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "MON-04",
+      "category": "displays",
+      "name": "标识与热插拔",
+      "acceptance": "启动、插拔、重排、休眠恢复后按选定标识策略恢复正确显示器分配。",
+      "verification": [
+        "runtime"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "MON-05",
+      "category": "displays",
+      "name": "对齐裁剪和翻转",
+      "acceptance": "同一测试网格下比较覆盖、包含、位置、缩放、翻转及不同宽高比输出。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "MON-06",
+      "category": "displays",
+      "name": "显示器拆分和移除",
+      "acceptance": "核对显示器拆分、复制、删除、配置组管理及每屏静音控制。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "REN-01",
+      "category": "rendering",
+      "name": "桌面窗口宿主",
+      "acceptance": "动态内容位于桌面图标之后；鼠标、桌面图标、任务栏、窗口切换保持可操作，退出正确清理。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "REN-02",
+      "category": "rendering",
+      "name": "本地视频",
+      "acceptance": "用MP4、WebM、AVI、M4V、MOV、WMV固定样本核对循环、音频、暂停、恢复、损坏与解码失败。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "REN-03",
+      "category": "rendering",
+      "name": "视频框架与HDR",
+      "acceptance": "核对DirectShow、WebM及Scene DX11选择、HDR视频、图像过滤、翻转及框架设置持久化。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "REN-04",
+      "category": "rendering",
+      "name": "网页壁纸",
+      "acceptance": "HTML/CSS/JS资源离线加载，核对自定义属性、文件选择、音频、输入、FPS及脚本错误处理。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "REN-05",
+      "category": "rendering",
+      "name": "二维场景",
+      "acceptance": "比较图层、材质、合成、遮罩、效果、粒子、动画、音频响应、灯光、文字的固定时间帧。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "REN-06",
+      "category": "rendering",
+      "name": "三维场景",
+      "acceptance": "比较模型、骨骼、材质、灯光、摄像机、阴影、反射、动态几何和物理的固定样本。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "REN-07",
+      "category": "rendering",
+      "name": "本地应用壁纸",
+      "acceptance": "按原版允许的本地应用类型核对窗口嵌入、输入、暂停及进程退出，不将Workshop应用分发算作2.8.42支持项。",
+      "verification": [
+        "runtime"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "REN-08",
+      "category": "rendering",
+      "name": "包与原始资源兼容",
+      "acceptance": "核对PKG、TEX、MDL、材质、着色器与相关资源版本的读取、依赖解析、报错和输出。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "REN-09",
+      "category": "rendering",
+      "name": "SceneScript",
+      "acceptance": "对生命周期、缩放、输入、属性、语言、时间、音频缓冲、全局与每屏存储验证事件和数据。",
+      "verification": [
+        "runtime"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "PLAY-01",
+      "category": "playback",
+      "name": "前台最大化全屏策略",
+      "acceptance": "按每屏与全屏策略核对保持运行、静音、暂停、停止并释放内存与恢复；排除自身管理窗口。",
+      "verification": [
+        "runtime"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "PLAY-02",
+      "category": "playback",
+      "name": "电源锁定休眠策略",
+      "acceptance": "交流电、电池、锁定、休眠和恢复触发正确策略，策略改变能够保存。",
+      "verification": [
+        "runtime"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "PLAY-03",
+      "category": "playback",
+      "name": "应用程序规则",
+      "acceptance": "按实际进程名称、运行和播放音频条件核对规则优先级、例外、壁纸和配置文件切换。",
+      "verification": [
+        "runtime"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "PLAY-04",
+      "category": "playback",
+      "name": "品质与帧率",
+      "acceptance": "核对FPS、抗锯齿、后处理、纹理、阴影、体积光、反射设置；视频帧率不能被错误套用场景规则。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "PLAY-05",
+      "category": "playback",
+      "name": "暂停与列表切换",
+      "acceptance": "按允许暂停时切换的选项核对列表计时和恢复后的目标项目。",
+      "verification": [
+        "runtime"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "AUD-01",
+      "category": "audio",
+      "name": "全局每屏与壁纸音量",
+      "acceptance": "核对全局输出、每屏静音、单壁纸音量及其组合，重启后恢复。",
+      "verification": [
+        "runtime"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "AUD-02",
+      "category": "audio",
+      "name": "自动静音与规则例外",
+      "acceptance": "外部应用开始和停止播放音频时按规则静音，保持运行例外按优先级生效。",
+      "verification": [
+        "runtime"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "AUD-03",
+      "category": "audio",
+      "name": "系统音频可视化",
+      "acceptance": "选择录制设备，对固定立体声频率验证64+64频带、更新速率、静音与设备切换。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "AUD-04",
+      "category": "audio",
+      "name": "媒体集成",
+      "acceptance": "验证真实Windows媒体会话的专辑图、标题、艺术家、专辑、换曲、暂停、黑名单和无会话回退。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "PL-01",
+      "category": "playlists",
+      "name": "列表编辑和保存",
+      "acceptance": "核对添加、删除、重复项目、拖动顺序、随机、保存载入与不同显示器分配。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "PL-02",
+      "category": "playlists",
+      "name": "时间触发与间隔",
+      "acceptance": "固定时钟下验证每项间隔、时间段、登录、手动和应用触发的正确边界行为。",
+      "verification": [
+        "runtime"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "PL-03",
+      "category": "playlists",
+      "name": "启动与状态恢复",
+      "acceptance": "首项仅启动播放一次、当前项目和列表状态的重启恢复符合原版。",
+      "verification": [
+        "runtime"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "PL-04",
+      "category": "playlists",
+      "name": "切换过渡",
+      "acceptance": "逐项比较原版过渡名称、持续时间、偏好随机选择和连续切换图像。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "SYS-01",
+      "category": "system",
+      "name": "系统托盘",
+      "acceptance": "菜单、最近壁纸、播放列表、暂停恢复、静音、管理窗口、关闭到托盘与退出行为一致。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "SYS-02",
+      "category": "system",
+      "name": "自动启动",
+      "acceptance": "正常与高优先级启动的注册、移除、后台启动和壁纸恢复行为得到实际验证。",
+      "verification": [
+        "runtime"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "SYS-03",
+      "category": "system",
+      "name": "热键与命令行",
+      "acceptance": "核对各项全局热键和原版CLI功能，包括目标显示器、参数、冲突和标准输出。",
+      "verification": [
+        "runtime"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "SYS-04",
+      "category": "system",
+      "name": "屏幕保护程序",
+      "acceptance": "核对预览、闲置进入、单独每屏配置、输入退出与恢复原壁纸。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "SYS-05",
+      "category": "system",
+      "name": "桌面图标与静态锁屏",
+      "acceptance": "核对图标显示、隐藏、透明度及静态锁屏快照；原版不支持动态锁屏。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "SYS-06",
+      "category": "system",
+      "name": "异常恢复与清理",
+      "acceptance": "Explorer重启、媒体丢失、驱动复位、网络断开、崩溃和进程退出不留下孤立窗口或丢失配置。",
+      "verification": [
+        "runtime"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "ED-01",
+      "category": "editor",
+      "name": "项目创建导入保存",
+      "acceptance": "图片场景、视频和网页项目的创建、资源复制、保存、关闭重开及路径处理正确。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "ED-02",
+      "category": "editor",
+      "name": "图层与属性操作",
+      "acceptance": "各图层类型、层级、选择、变换、属性编辑、复制、删除、撤销和重做与原版对照。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "ED-03",
+      "category": "editor",
+      "name": "图像效果与遮罩",
+      "acceptance": "效果堆叠、顺序、开关、参数、链接、绘制遮罩和合成层保存后输出一致。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "ED-04",
+      "category": "editor",
+      "name": "粒子系统",
+      "acceptance": "验证渲染器、发射器、初始化器、操作器、子系统、控制点、精灵图动画及鼠标音频响应。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "ED-05",
+      "category": "editor",
+      "name": "时间轴与曲线",
+      "acceptance": "核对动画长度、插值、循环镜像单次、关键帧和曲线编辑及保存恢复。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "ED-06",
+      "category": "editor",
+      "name": "角色变形与骨骼",
+      "acceptance": "核对网格、骨骼、权重、约束、变形、动画与相应工具的输出。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "ED-07",
+      "category": "editor",
+      "name": "模型材质灯光物理",
+      "acceptance": "核对FBX动画纹理、OBJ、二维法线生成、灯光反射、三维材质、物理和动态顶点。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "ED-08",
+      "category": "editor",
+      "name": "脚本与着色器编辑",
+      "acceptance": "核对编辑、错误定位、日志、预览、SceneScript事件与自定义着色器运行。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "ED-09",
+      "category": "editor",
+      "name": "用户属性和条件",
+      "acceptance": "每种原版属性类型、分组、快捷键、条件表达式、文件目录选择和默认值均有固定测试。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "ED-10",
+      "category": "editor",
+      "name": "资源共享与性能统计",
+      "acceptance": "资源效果脚本导入导出、依赖清理、纹理裁剪压缩和内存统计正确。",
+      "verification": [
+        "runtime",
+        "visual"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "ED-11",
+      "category": "editor",
+      "name": "发布与预览",
+      "acceptance": "标题描述分类年龄可见性预览、预览GIF录制、首次发布和更新原项目得到验证。",
+      "verification": [
+        "runtime",
+        "visual",
+        "external"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "STEAM-01",
+      "category": "steam",
+      "name": "发现和创意工坊",
+      "acceptance": "核对真实在线查询、筛选、分页、作者、合集、结果、无网络、无权限与错误状态。",
+      "verification": [
+        "runtime",
+        "visual",
+        "external"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "STEAM-02",
+      "category": "steam",
+      "name": "订阅与下载",
+      "acceptance": "真实订阅、取消订阅、下载进度、更新、收藏、投票、报告和用户账号状态得到验证。",
+      "verification": [
+        "runtime",
+        "visual",
+        "external"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "STEAM-03",
+      "category": "steam",
+      "name": "Steamworks身份和发布",
+      "acceptance": "真实账号、产品访问、客户端连接、发布更新与离线状态得到验证；不能用本地假数据代替验收。",
+      "verification": [
+        "runtime",
+        "external"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "MOB-01",
+      "category": "mobile",
+      "name": "移动设备发现与配对",
+      "acceptance": "真实设备发现、四位PIN、错误PIN、记住配对、重连和状态显示得到验证。",
+      "verification": [
+        "runtime",
+        "visual",
+        "external"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "MOB-02",
+      "category": "mobile",
+      "name": "传输与移动包",
+      "acceptance": "场景视频兼容判断、质量优化、多项传输、取消、MPKG导入导出及手机播放得到验证。",
+      "verification": [
+        "runtime",
+        "visual",
+        "external"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    },
+    {
+      "id": "RGB-01",
+      "category": "rgb",
+      "name": "iCUE与Chroma",
+      "acceptance": "真实兼容硬件下验证SDK插件、壁纸LED开关、色彩增强、延迟、重连与休眠恢复。",
+      "verification": [
+        "runtime",
+        "visual",
+        "external"
+      ],
+      "status": "unverified",
+      "evidence": {}
+    }
+  ],
+  "completion": {
+    "fullParityClaimAllowed": false,
+    "rule": "Every identified feature must pass all specified verification kinds, with evidence."
+  },
+  "sources": [
+    "https://store.steampowered.com/app/431960/Wallpaper_Engine/",
+    "https://store.steampowered.com/news/posts/?appids=431960&feed=steam_community_announcements",
+    "https://help.wallpaperengine.io/en/functionality/cli.html",
+    "https://help.wallpaperengine.io/en/steam/steamworks.html",
+    "https://docs.wallpaperengine.io/en/scene/overview.html",
+    "https://docs.wallpaperengine.io/en/web/overview.html",
+    "https://help.wallpaperengine.io/en/mobile/pairing.html"
+  ]
+}

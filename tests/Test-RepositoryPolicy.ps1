@@ -9,6 +9,8 @@ $taskRequirements = [ordered]@{
     '要求交付前通过全部验证' = '交付前，确保所有测试和验证全部通过'
     '记录指定 GitHub 仓库' = 'https://github.com/yone0505/Wallpaper--'
     '要求提交并推送修改' = '提交 commit 并推送'
+    '记录固定对照版本' = 'Wallpaper Engine 2.8.42'
+    '要求逐项验收完成' = '只有全部验收项目通过'
 }
 
 $taskFailures = [System.Collections.Generic.List[string]]::new()
