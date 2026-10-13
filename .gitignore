@@ -1,0 +1,22 @@
+# Local reference captures, third-party artifacts, and deliverable builds.
+/work/
+/outputs/
+
+# Dependency caches and compiled files.
+node_modules/
+bin/
+obj/
+.vs/
+.venv/
+__pycache__/
+*.py[cod]
+
+# Local settings and diagnostics.
+.env
+.env.*
+!.env.example
+*.user
+*.suo
+*.log
+Thumbs.db
+.DS_Store
