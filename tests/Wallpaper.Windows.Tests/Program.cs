@@ -17,6 +17,7 @@ try
  env.Save("tvly-saved-test-key");Assert(env.Read()=="tvly-saved-test-key","saved credential takes precedence");
  try{env.Save("bad\r\nkey");throw new Exception("Expected invalid key");}catch(InvalidDataException){}
  Assert(env.Read()=="tvly-saved-test-key","invalid key does not replace saved credential");
- Console.WriteLine("All 8 Windows credential tests passed.");
+ env.Clear(); Assert(env.Read()=="tvly-environment-test-key" && !env.Status().HasSavedKey,"clearing saved key restores environment fallback");
+ Console.WriteLine("All 9 Windows credential tests passed.");
 }
 finally { vault.Clear(); }

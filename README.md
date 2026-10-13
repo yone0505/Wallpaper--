@@ -40,6 +40,6 @@ Windows 动态壁纸软件重建项目。目标是对照本机 Wallpaper Engine 
 ./scripts/Test-Gui.ps1 -ExePath ./outputs/WallpaperDesktop/WallpaperDesktop.exe
 ```
 
-Test-All 包含四项仓库规范验证、31 项核心行为、15 项 HTTP 搜索契约、8 项 Windows 凭据测试、11 项 Node 测试及应用构建。Test-Gui 使用 Playwright 1.64.0 连接测试实例的 WebView2，验证实际播放、桌面父窗口、休眠/恢复、操作竞争、重启恢复及 Tavily 页面交互；首次运行会下载 Playwright，不下载额外浏览器。搜索 GUI 测试使用本机 HTTP 模拟服务及测试密钥，界面显式显示测试模式，不消耗真实 Tavily 额度。测试使用独立数据目录及原创 WebM 素材，暂时覆盖桌面背景，结束后退出测试实例。需要本机可交互的 Explorer 桌面；测试专用端口为 32222/32223，正常启动不开放调试端口。
+Test-All 包含四项仓库规范验证、31 项核心行为、15 项 HTTP 搜索契约、9 项 Windows 凭据测试、11 项 Node 测试及应用构建。Test-Gui 使用 Playwright 1.64.0 连接测试实例的 WebView2，验证实际播放、桌面父窗口、休眠/恢复、操作竞争、重启恢复及 Tavily 页面交互；首次运行会下载 Playwright，不下载额外浏览器。搜索 GUI 测试使用本机 HTTP 模拟服务及测试密钥，界面显式显示测试模式，不消耗真实 Tavily 额度。测试使用独立数据目录及原创 WebM 素材，暂时覆盖桌面背景，结束后退出测试实例。需要本机可交互的 Explorer 桌面；测试专用端口为 32222/32223，正常启动不开放调试端口。
 
 运行截图与诊断在 `work/validation/`，发布文件在 `outputs/`，均不会提交 GitHub。61 项最终一致性基线仍需要更完整的运行、视觉和外部集成证据；当前测试通过只能证明此阶段的具体行为。
