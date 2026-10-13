@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Diagnostics;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.WinForms;
 using Wallpaper.Core;
@@ -11,6 +12,7 @@ internal sealed class ManagerForm : Form
     private readonly WebView2 view=new() { Dock=DockStyle.Fill,DefaultBackgroundColor=Color.FromArgb(34,34,34) };
     private readonly NotifyIcon tray=new() { Icon=SystemIcons.Application,Text="Wallpaper Desktop" };
     private AppController? controller;
+    private TavilyWorkshopService? workshop;
     private bool exiting;
     private readonly HashSet<string> mediaHosts=[];
     internal ManagerForm(LaunchOptions options)
@@ -39,6 +41,7 @@ internal sealed class ManagerForm : Form
             var playerArgs="--autoplay-policy=no-user-gesture-required"+(options.DebugPort>0?$" --remote-debugging-port={(options.DebugPort==65535?65534:options.DebugPort+1)}":"");
             var playerEnv=await CoreWebView2Environment.CreateAsync(null,Path.Combine(options.DataDirectory,"browser-player"),new(playerArgs));
             controller=new(new StateStore(options.DataDirectory),playerEnv,options.Imports);
+            workshop=new(options.DataDirectory,options.TavilyTestEndpoint);
             await view.EnsureCoreWebView2Async(uiEnv);
             var core=view.CoreWebView2;
             core.Settings.AreHostObjectsAllowed=false; core.Settings.AreDefaultContextMenusEnabled=false;
@@ -70,7 +73,7 @@ internal sealed class ManagerForm : Form
     }
     private void PushState()
     {
-        if (view.CoreWebView2 is not null && !IsDisposed) view.CoreWebView2.PostWebMessageAsJson(JsonSerializer.Serialize(new { eventName="state",result=Snapshot() },StateStore.Json));
+        if (!IsDisposed && !view.IsDisposed && view.CoreWebView2 is not null) view.CoreWebView2.PostWebMessageAsJson(JsonSerializer.Serialize(new { eventName="state",result=Snapshot() },StateStore.Json));
     }
     private async Task Message(CoreWebView2WebMessageReceivedEventArgs e)
     {
@@ -84,6 +87,15 @@ internal sealed class ManagerForm : Form
             {
                 case "state": result=Snapshot(); break;
                 case "diagnostics": result=controller.Diagnostics(); break;
+                case "tavilyStatus": result=workshop!.Status(); break;
+                case "tavilySaveKey": result=workshop!.SaveKey(Arg("key")); break;
+                case "tavilyClearKey": result=workshop!.ClearKey(); break;
+                case "workshopSearch": result=await workshop!.Search(Arg("query")); break;
+                case "workshopCancel": workshop!.Cancel(); break;
+                case "workshopOpen":
+                    var url=SteamWorkshop.CanonicalUrl(Arg("url"))??throw new InvalidDataException("只能打开 Steam 创意工坊的条目页面。");
+                    Process.Start(new ProcessStartInfo(url) { UseShellExecute=true }); break;
+                case "tavilyAccount": Process.Start(new ProcessStartInfo("https://app.tavily.com/") { UseShellExecute=true }); break;
                 case "import":
                     using (var dialog=new OpenFileDialog { Multiselect=true,Title="选择视频、网页或 project.json",Filter="壁纸资源|*.mp4;*.webm;*.m4v;*.mov;*.html;*.htm;*.json|所有文件|*.*" })
                         result=dialog.ShowDialog(this)==DialogResult.OK?controller.Import(dialog.FileNames):0;
@@ -119,14 +131,15 @@ internal sealed class ManagerForm : Form
             }
             coreReply(new { id=request.Id,result });
         }
+        catch (OperationCanceledException) { coreReply(new { id=request?.Id??0,error="搜索已取消。" }); }
         catch (Exception ex) { coreReply(new { id=request?.Id??0,error=ex.Message }); }
-        void coreReply(object value) { if (view.CoreWebView2 is not null) view.CoreWebView2.PostWebMessageAsJson(JsonSerializer.Serialize(value,StateStore.Json)); }
+        void coreReply(object value) { if (!IsDisposed && !Disposing && !view.IsDisposed && view.CoreWebView2 is not null) view.CoreWebView2.PostWebMessageAsJson(JsonSerializer.Serialize(value,StateStore.Json)); }
     }
     private void OpenManager() { Show(); WindowState=FormWindowState.Normal; Activate(); }
     private void Exit() { exiting=true; Close(); }
     protected override void Dispose(bool disposing)
     {
-        if (disposing) { controller?.Dispose(); tray.Visible=false; tray.ContextMenuStrip?.Dispose(); tray.Dispose(); view.Dispose(); }
+        if (disposing) { workshop?.Dispose(); controller?.Dispose(); tray.Visible=false; tray.ContextMenuStrip?.Dispose(); tray.Dispose(); view.Dispose(); }
         base.Dispose(disposing);
     }
 }

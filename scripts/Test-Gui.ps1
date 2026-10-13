@@ -31,6 +31,8 @@ try {
     if ($LASTEXITCODE -ne 0) { throw 'GUI smoke failed' }
     & node tests/gui-restart.mjs
     if ($LASTEXITCODE -ne 0) { throw 'GUI restart failed' }
+    & node tests/workshop-gui.mjs
+    if ($LASTEXITCODE -ne 0) { throw 'Workshop GUI tests failed' }
     Write-Output 'PASS: all native GUI checks'
 } finally {
     if (-not $process.HasExited) { Stop-Process -Id $process.Id }

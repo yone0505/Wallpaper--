@@ -13,7 +13,11 @@ if (-not $DotNet) {
 & ./tests/Test-ParityBaselineRegression.ps1
 & $DotNet run --project tests/Wallpaper.Core.Tests -c Release
 if ($LASTEXITCODE -ne 0) { throw 'Core tests failed' }
-& node --test tests/ui-model.test.mjs
+& $DotNet run --project tests/Wallpaper.Search.Tests -c Release
+if ($LASTEXITCODE -ne 0) { throw 'Search tests failed' }
+& $DotNet run --project tests/Wallpaper.Windows.Tests -c Release
+if ($LASTEXITCODE -ne 0) { throw 'Windows credential tests failed' }
+& node --test tests/ui-model.test.mjs tests/workshop-model.test.mjs
 if ($LASTEXITCODE -ne 0) { throw 'UI model tests failed' }
 if (Test-Path ./src/Wallpaper.App/Wallpaper.App.csproj) {
     & $DotNet build src/Wallpaper.App -c Release

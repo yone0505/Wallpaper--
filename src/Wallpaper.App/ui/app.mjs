@@ -1,9 +1,11 @@
 import {visibleItems,selectedItem,renderTitle,safeUrl} from './model.mjs';
+import {WorkshopUi} from './workshop.mjs';
 const $=id=>document.getElementById(id);
-let serial=0,state=null,thumbnails={},selected=null,kind='all',playlistOpen=false;
+let serial=0,state=null,thumbnails={},selected=null,kind='all',playlistOpen=false,source='installed';
 const requests=new Map();
 function call(method,args={}) { return new Promise((resolve,reject)=>{const id=++serial;const timeout=setTimeout(()=>{requests.delete(id);reject(new Error('操作超时，请重试。'))},120000);requests.set(id,{resolve,reject,timeout});window.chrome.webview.postMessage({id,method,args});}); }
 window.wallpaper={call};
+const workshopUi=new WorkshopUi({call,configure:()=>openSettings('plugins'),selectionChanged:valid=>{if(source==='workshop')$('ok').disabled=!valid;}});
 window.chrome.webview.addEventListener('message',e=>{const data=e.data;if(data.eventName==='state'){update(data.result);return}const r=requests.get(data.id);if(!r)return;clearTimeout(r.timeout);requests.delete(data.id);if(data.error)r.reject(new Error(data.error));else r.resolve(data.result)});
 function message(text){$('message').textContent=text;}
 async function action(method,args={}){try{return await call(method,args)}catch(e){message(e.message);info('操作未完成',e.message);throw e;}}
@@ -24,7 +26,7 @@ $('grid').onclick=e=>{const button=e.target.closest('[data-id]');if(button){sele
 $('grid').ondblclick=e=>{const button=e.target.closest('[data-id]');if(button){selected=button.dataset.id;apply()}};
 async function apply(){if(selected){await action('apply',{id:selected,monitor:$('monitor').value});message('壁纸已应用到所选显示器。')}}
 $('apply').onclick=()=>apply().catch(()=>{});
-$('ok').onclick=async()=>{try{await apply();await call('window',{action:'close'})}catch{}};
+$('ok').onclick=async()=>{try{if(source==='workshop'){await workshopUi.open();return}await apply();await call('window',{action:'close'})}catch{}};
 $('stop').onclick=()=>action('stop',{monitor:$('monitor').value}).catch(()=>{});
 $('pause').onclick=()=>action('pause').catch(()=>{});
 $('monitor').onchange=render;
@@ -42,13 +44,14 @@ $('toggleFilter').onclick=()=>{$('filters').hidden=!$('filters').hidden};
 document.querySelectorAll('[name=kind]').forEach(x=>x.onchange=()=>{kind=x.value;render()});
 document.querySelectorAll('[data-window]').forEach(x=>x.onclick=()=>call('window',{action:x.dataset.window}));
 $('titlebar').onmousedown=e=>{if(!e.target.closest('button'))call('window',{action:'drag'})};
-document.querySelectorAll('[data-source]').forEach(x=>x.onclick=()=>{if(x.dataset.source!=='installed')info(x.textContent,'Steam 内容浏览和订阅接口尚未实现。当前版本可以导入本机已下载的视频及网页项目。')});
+document.querySelectorAll('[data-source]').forEach(x=>x.onclick=()=>{if(x.dataset.source==='discover'){info('发现','推荐内容浏览尚未实现。可在“创意工坊”中通过 Tavily 搜索 Steam 页面。');return}source=x.dataset.source;document.querySelectorAll('[data-source]').forEach(b=>b.classList.toggle('selected',b===x));$('installedPage').hidden=source==='workshop';$('playlistSection').hidden=source==='workshop';$('workshopPage').hidden=source!=='workshop';$('ok').textContent=source==='workshop'?'打开 Steam 页面':'确定';$('ok').disabled=false;if(source==='workshop')workshopUi.show();else workshopUi.hide()});
 $('mobile').onclick=()=>info('移动设备','手机配对和传输尚未实现，仍保留在完整功能验收清单中。');
 $('editor').onclick=()=>info('壁纸编辑器','场景引擎和编辑器尚未实现。当前可导入本地视频、HTML 和 video/web project.json。');
 $('display').onclick=()=>{$('monitor').focus();message('在右侧选择显示器，再应用所选壁纸。')};
 function tab(name){document.querySelectorAll('[data-panel]').forEach(x=>x.hidden=x.dataset.panel!==name);document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('selected',x.dataset.tab===name))}
-document.querySelectorAll('[data-tab]').forEach(x=>x.onclick=()=>tab(x.dataset.tab));
-$('settings').onclick=()=>{const s=state.settings;$('fullscreen').value=String(s.pauseOnFullscreen);$('settingsFit').value=s.fit;$('volume').value=s.volume;$('volumeValue').textContent=s.volume+'%';$('muted').checked=s.muted;$('interval').value=s.intervalSeconds;$('autoPlaylist').checked=s.playlistEnabled;tab('performance');$('settingsDialog').showModal()};
+document.querySelectorAll('[data-tab]').forEach(x=>x.onclick=()=>{tab(x.dataset.tab);if(x.dataset.tab==='plugins')workshopUi.refreshStatus().catch(e=>workshopUi.keyError(e.message))});
+function openSettings(name='performance'){if(!state)return;const s=state.settings;$('fullscreen').value=String(s.pauseOnFullscreen);$('settingsFit').value=s.fit;$('volume').value=s.volume;$('volumeValue').textContent=s.volume+'%';$('muted').checked=s.muted;$('interval').value=s.intervalSeconds;$('autoPlaylist').checked=s.playlistEnabled;tab(name);$('settingsDialog').showModal();workshopUi.refreshStatus().catch(e=>workshopUi.keyError(e.message));if(name==='plugins')$('tavilyKey').focus();}
+$('settings').onclick=()=>openSettings();
 $('volume').oninput=()=>{$('volumeValue').textContent=$('volume').value+'%'};
 for(const id of ['closeSettings','cancelSettings'])$(id).onclick=()=>$('settingsDialog').close();
 $('saveSettings').onclick=async()=>{try{await action('settings',{...state.settings,volume:Number($('volume').value),muted:$('muted').checked,fit:$('settingsFit').value,pauseOnFullscreen:$('fullscreen').value==='true',intervalSeconds:Number($('interval').value),playlistEnabled:$('autoPlaylist').checked});$('settingsDialog').close();message('设置已保存。')}catch{}};

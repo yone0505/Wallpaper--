@@ -4,7 +4,7 @@ namespace Wallpaper.Core;
 
 public sealed record BridgeRequest(int Id, string Method, JsonElement Args)
 {
-    private static readonly HashSet<string> Methods = ["state", "import", "importFolder", "apply", "stop", "pause", "remove", "settings", "playlist", "next", "window", "diagnostics"];
+    private static readonly HashSet<string> Methods = ["state", "import", "importFolder", "apply", "stop", "pause", "remove", "settings", "playlist", "next", "window", "diagnostics", "tavilyStatus", "tavilySaveKey", "tavilyClearKey", "tavilyAccount", "workshopSearch", "workshopCancel", "workshopOpen"];
     public static BridgeRequest Parse(string value)
     {
         try
